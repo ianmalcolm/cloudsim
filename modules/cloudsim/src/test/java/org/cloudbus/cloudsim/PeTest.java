@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Test;
 
 /**
@@ -27,7 +28,7 @@ public class PeTest {
 		PeProvisionerSimple peProvisioner = new PeProvisionerSimple(MIPS);
 		Pe pe = new Pe(0, peProvisioner);
 		assertSame(peProvisioner, pe.getPeProvisioner());
-		assertEquals(MIPS, pe.getPeProvisioner().getAvailableMips(), 0);
+		assertEquals(MIPS, pe.getPeProvisioner().getAvailableRes(), 0);
 	}
 
 	@Test

@@ -8,6 +8,8 @@
 
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.resource.gridsim;
+
 /**
  * A class for representing a physical file in a DataCloud environment
  * 

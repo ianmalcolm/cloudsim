@@ -20,6 +20,7 @@ import java.util.List;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -89,12 +90,12 @@ public class HostTest {
 
 		assertTrue(host.vmCreate(vm));
 		assertSame(vm, host.getVm(0, 0));
-		assertEquals(MIPS, host.getVmScheduler().getAvailableMips(), 0);
+		assertEquals(MIPS, host.getVmScheduler().getAvailableRes(), 0);
 
 		host.vmDestroy(vm);
 		assertNull(host.getVm(0, 0));
 		assertEquals(0, host.getVmList().size());
-		assertEquals(MIPS * 2, host.getVmScheduler().getAvailableMips(), 0);
+		assertEquals(MIPS * 2, host.getVmScheduler().getAvailableRes(), 0);
 	}
 
 	@Test
@@ -104,17 +105,17 @@ public class HostTest {
 
 		assertTrue(host.vmCreate(vm0));
 		assertSame(vm0, host.getVm(0, 0));
-		assertEquals(MIPS, host.getVmScheduler().getAvailableMips(), 0);
+		assertEquals(MIPS, host.getVmScheduler().getAvailableRes(), 0);
 
 		assertTrue(host.vmCreate(vm1));
 		assertSame(vm1, host.getVm(1, 0));
-		assertEquals(0, host.getVmScheduler().getAvailableMips(), 0);
+		assertEquals(0, host.getVmScheduler().getAvailableRes(), 0);
 
 		host.vmDestroyAll();
 		assertNull(host.getVm(0, 0));
 		assertNull(host.getVm(1, 0));
 		assertEquals(0, host.getVmList().size());
-		assertEquals(MIPS * 2, host.getVmScheduler().getAvailableMips(), 0);
+		assertEquals(MIPS * 2, host.getVmScheduler().getAvailableRes(), 0);
 	}
 
 	@Ignore

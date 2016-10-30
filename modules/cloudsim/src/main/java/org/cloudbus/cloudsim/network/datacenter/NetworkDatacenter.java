@@ -19,12 +19,12 @@ import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmAllocationPolicy;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.resource.Storage;
 
 /**
  * NetworkDatacenter class is a Datacenter whose hostList are virtualized and networked. It contains
@@ -122,7 +122,7 @@ public class NetworkDatacenter extends Datacenter {
 			getVmList().add(vm);
 
 			vm.updateVmProcessing(CloudSim.clock(), getVmAllocationPolicy().getHost(vm).getVmScheduler()
-					.getAllocatedMipsForVm(vm));
+					.getAllocatedResForVm(vm));
 		}
 		return result;
 	}

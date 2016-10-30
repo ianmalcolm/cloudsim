@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.Host;
-import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmScheduler;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -22,6 +21,7 @@ import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.lists.VmList;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
+import org.cloudbus.cloudsim.resource.Pe;
 
 /**
  * NetworkHost class extends Host to support simulation of networked datacenters. It executes
@@ -90,7 +90,7 @@ public class NetworkHost extends Host {
 		recvpackets();
 		for (Vm vm : super.getVmList()) {
 			double time = ((NetworkVm) vm).updateVmProcessing(currentTime, getVmScheduler()
-					.getAllocatedMipsForVm(vm));
+					.getAllocatedResForVm(vm));
 			if (time > 0.0 && time < smallerTime) {
 				smallerTime = time;
 			}
@@ -178,7 +178,7 @@ public class NetworkHost extends Host {
 		}
 		if (flag) {
 			for (Vm vm : super.getVmList()) {
-				vm.updateVmProcessing(CloudSim.clock(), getVmScheduler().getAllocatedMipsForVm(vm));
+				vm.updateVmProcessing(CloudSim.clock(), getVmScheduler().getAllocatedResForVm(vm));
 			}
 		}
 

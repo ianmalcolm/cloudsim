@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Before;
 import org.junit.Test;
 

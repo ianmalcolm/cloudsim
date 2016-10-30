@@ -14,9 +14,9 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.power.models.PowerModelLinear;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Before;
 import org.junit.Test;
 

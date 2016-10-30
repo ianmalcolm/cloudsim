@@ -6,10 +6,14 @@
  * Copyright (c) 2009-2012, The University of Melbourne, Australia
  */
 
-package org.cloudbus.cloudsim;
+package org.cloudbus.cloudsim.resource;
 
 import java.util.Iterator;
 import java.util.List;
+
+import org.cloudbus.cloudsim.File;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.ParameterException;
 
 /**
  * SANStorage represents a storage area network composed of a set of harddisks connected in a LAN.

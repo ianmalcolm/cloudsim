@@ -66,7 +66,7 @@ public class RootSwitch extends Switch {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), switching_delay, CloudSimTags.Network_Event_send);
+		send(getId(), switching_delay, CloudSimTags.Network_Event_send);
 
 		if (level == NetworkConstants.ROOT_LEVEL) {
 			// get id of edge router

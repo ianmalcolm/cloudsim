@@ -6,9 +6,11 @@
  * Copyright (c) 2009-2012, The University of Melbourne, Australia
  */
 
-package org.cloudbus.cloudsim;
+package org.cloudbus.cloudsim.resource;
 
 import java.util.List;
+
+import org.cloudbus.cloudsim.File;
 
 /**
  * An interface which defines the desired functionality of a storage system in a Data Cloud. The

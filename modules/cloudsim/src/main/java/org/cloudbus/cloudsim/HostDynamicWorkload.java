@@ -16,6 +16,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
+import org.cloudbus.cloudsim.resource.Pe;
 
 /**
  * The class of a host supporting dynamic workloads and performance degradation.
@@ -68,16 +69,16 @@ public class HostDynamicWorkload extends Host {
 		double hostTotalRequestedMips = 0;
 
 		for (Vm vm : getVmList()) {
-			getVmScheduler().deallocatePesForVm(vm);
+			getVmScheduler().deallocateResForVm(vm);
 		}
 
 		for (Vm vm : getVmList()) {
-			getVmScheduler().allocatePesForVm(vm, vm.getCurrentRequestedMips());
+			getVmScheduler().allocateResForVm(vm, vm.getCurrentRequestedMips());
 		}
 
 		for (Vm vm : getVmList()) {
 			double totalRequestedMips = vm.getCurrentRequestedTotalMips();
-			double totalAllocatedMips = getVmScheduler().getTotalAllocatedMipsForVm(vm);
+			double totalAllocatedMips = getVmScheduler().getTotalAllocatedResForVm(vm);
 
 			if (!Log.isDisabled()) {
 				Log.formatLine(
@@ -90,15 +91,15 @@ public class HostDynamicWorkload extends Host {
 						vm.getMips(),
 						totalRequestedMips / vm.getMips() * 100);
 
-				List<Pe> pes = getVmScheduler().getPesAllocatedForVM(vm);
+				List<Pe> pes = getVmScheduler().getResAllocatedForVM(vm);
 				StringBuilder pesString = new StringBuilder();
 				for (Pe pe : pes) {
 					pesString.append(String.format(" PE #" + pe.getId() + ": %.2f.", pe.getPeProvisioner()
-							.getTotalAllocatedMipsForVm(vm)));
+							.getTotalAllocatedResForVm(vm)));
 				}
 				Log.formatLine(
 						"%.2f: [Host #" + getId() + "] MIPS for VM #" + vm.getId() + " by PEs ("
-								+ getNumberOfPes() + " * " + getVmScheduler().getPeCapacity() + ")."
+								+ getNumberOfPes() + " * " + getVmScheduler().getResCapacity() + ")."
 								+ pesString,
 						CloudSim.clock());
 			}

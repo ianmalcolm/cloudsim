@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.cloudbus.cloudsim.resource.Resource;
+import org.cloudbus.cloudsim.resource.ResourceList;
+
 /**
  * VmSchedulerSpaceShared is a VMM allocation policy that allocates one or more Pe to a VM, and
  * doesn't allow sharing of PEs. If there is no free PEs to the VM, allocation fails. Free PEs are
@@ -25,22 +28,15 @@ import java.util.Map;
  */
 public class VmSchedulerSpaceShared extends VmScheduler {
 
-	/** Map containing VM ID and a vector of PEs allocated to this VM. */
-	private Map<String, List<Pe>> peAllocationMap;
-
-	/** The free pes vector. */
-	private List<Pe> freePes;
-
 	/**
 	 * Instantiates a new vm scheduler space shared.
 	 * 
-	 * @param pelist the pelist
+	 * @param _reslist the pelist
 	 */
-	public VmSchedulerSpaceShared(List<? extends Pe> pelist) {
-		super(pelist);
-		setPeAllocationMap(new HashMap<String, List<Pe>>());
-		setFreePes(new ArrayList<Pe>());
-		getFreePes().addAll(pelist);
+	public VmSchedulerSpaceShared(ResourceList _reslist) {
+		super(_reslist);
+		resAllocation.clear();
+
 	}
 
 	/*
@@ -49,9 +45,9 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 	 * java.util.List)
 	 */
 	@Override
-	public boolean allocatePesForVm(Vm vm, List<Double> mipsShare) {
+	public boolean allocateResForVm(Vm vm, ResourceList requestedResList) {
 		// if there is no enough free PEs, fails
-		if (getFreePes().size() < mipsShare.size()) {
+		if (getAvailableRes().compareTo(requestedResList)<0) {
 			return false;
 		}
 
@@ -75,9 +71,9 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 		getFreePes().removeAll(selectedPes);
 
-		getPeAllocationMap().put(vm.getUid(), selectedPes);
+		getResMap().put(vm.getUid(), selectedPes);
 		getMipsMap().put(vm.getUid(), mipsShare);
-		setAvailableMips(getAvailableMips() - totalMips);
+		setAvailableMips(getAvailableRes() - totalMips);
 		return true;
 	}
 
@@ -86,15 +82,15 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 	 * @see org.cloudbus.cloudsim.VmScheduler#deallocatePesForVm(org.cloudbus.cloudsim.Vm)
 	 */
 	@Override
-	public void deallocatePesForVm(Vm vm) {
-		getFreePes().addAll(getPeAllocationMap().get(vm.getUid()));
-		getPeAllocationMap().remove(vm.getUid());
+	public void deallocateResForVm(Vm vm) {
+		getFreePes().addAll(getResMap().get(vm.getUid()));
+		getResMap().remove(vm.getUid());
 
 		double totalMips = 0;
 		for (double mips : getMipsMap().get(vm.getUid())) {
 			totalMips += mips;
 		}
-		setAvailableMips(getAvailableMips() + totalMips);
+		setAvailableMips(getAvailableRes() + totalMips);
 
 		getMipsMap().remove(vm.getUid());
 	}
@@ -104,8 +100,9 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 	 * 
 	 * @param peAllocationMap the pe allocation map
 	 */
-	protected void setPeAllocationMap(Map<String, List<Pe>> peAllocationMap) {
-		this.peAllocationMap = peAllocationMap;
+	protected void setResMap(Map<Vm, List<? extends Resource>> _resMap) {
+		resAllocation.clear();
+		resAllocation.putAll(_resMap);
 	}
 
 	/**
@@ -113,8 +110,8 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 	 * 
 	 * @return the pe allocation map
 	 */
-	protected Map<String, List<Pe>> getPeAllocationMap() {
-		return peAllocationMap;
+	public Map<Vm, List<? extends Resource>> getResMap() {
+		return resAllocation;
 	}
 
 	/**

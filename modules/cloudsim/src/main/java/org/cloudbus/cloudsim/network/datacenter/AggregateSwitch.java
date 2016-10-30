@@ -68,7 +68,7 @@ public class AggregateSwitch extends Switch {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), latency, CloudSimTags.Network_Event_send);
+		send(getId(), latency, CloudSimTags.Network_Event_send);
 
 		if (level == NetworkConstants.Agg_LEVEL) {
 			// packet is coming from root so need to be sent to edgelevel swich
@@ -101,7 +101,7 @@ public class AggregateSwitch extends Switch {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), switching_delay, CloudSimTags.Network_Event_send);
+		send(getId(), switching_delay, CloudSimTags.Network_Event_send);
 
 		if (level == NetworkConstants.Agg_LEVEL) {
 			// packet is coming from edge level router so need to be sent to

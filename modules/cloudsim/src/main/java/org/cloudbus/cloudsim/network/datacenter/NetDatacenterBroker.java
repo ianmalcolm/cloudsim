@@ -353,7 +353,7 @@ public class NetDatacenterBroker extends SimEntity {
 		if (NetworkConstants.iteration < 10) {
 
 			NetworkConstants.iteration++;
-			this.schedule(getId(), NetworkConstants.nexttime, CloudSimTags.NextCycle);
+			this.send(getId(), NetworkConstants.nexttime, CloudSimTags.NextCycle);
 		}
 
 		setVmsRequested(requestedVms);
@@ -435,7 +435,7 @@ public class NetDatacenterBroker extends SimEntity {
 	@Override
 	public void startEntity() {
 		Log.printLine(getName() + " is starting...");
-		schedule(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
+		send(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
 	}
 
 	/**

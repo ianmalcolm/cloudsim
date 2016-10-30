@@ -155,12 +155,12 @@ public class NetworkCloudletSpaceSharedScheduler extends CloudletScheduler {
 				cl.timetostartStage = CloudSim.clock();
 
 				if (cl.stages.get(0).type == NetworkConstants.EXECUTION) {
-					NetDatacenterBroker.linkDC.schedule(
+					NetDatacenterBroker.linkDC.send(
 							NetDatacenterBroker.linkDC.getId(),
 							cl.stages.get(0).time,
 							CloudSimTags.VM_DATACENTER_EVENT);
 				} else {
-					NetDatacenterBroker.linkDC.schedule(
+					NetDatacenterBroker.linkDC.send(
 							NetDatacenterBroker.linkDC.getId(),
 							0.0001,
 							CloudSimTags.VM_DATACENTER_EVENT);
@@ -260,7 +260,7 @@ public class NetworkCloudletSpaceSharedScheduler extends CloudletScheduler {
 				}
 
 			}
-			NetDatacenterBroker.linkDC.schedule(
+			NetDatacenterBroker.linkDC.send(
 					NetDatacenterBroker.linkDC.getId(),
 					0.0001,
 					CloudSimTags.VM_DATACENTER_EVENT);
@@ -269,7 +269,7 @@ public class NetworkCloudletSpaceSharedScheduler extends CloudletScheduler {
 			} else {
 				cl.currStagenum = i;
 				if (cl.stages.get(i).type == NetworkConstants.EXECUTION) {
-					NetDatacenterBroker.linkDC.schedule(
+					NetDatacenterBroker.linkDC.send(
 							NetDatacenterBroker.linkDC.getId(),
 							cl.stages.get(i).time,
 							CloudSimTags.VM_DATACENTER_EVENT);

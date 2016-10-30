@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,9 +52,9 @@ public class VmSchedulerTimeSharedTest {
 	@Test
 	public void testInit() {
 		assertSame(peList, vmScheduler.getPeList());
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableMips(), 0);
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableMips(), 0);
-		assertEquals(0, vmScheduler.getTotalAllocatedMipsForVm(vm1), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableRes(), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableRes(), 0);
+		assertEquals(0, vmScheduler.getTotalAllocatedResForVm(vm1), 0);
 	}
 
 	@Test
@@ -61,27 +62,27 @@ public class VmSchedulerTimeSharedTest {
 		List<Double> mipsShare1 = new ArrayList<Double>();
 		mipsShare1.add(MIPS / 4);
 
-		assertTrue(vmScheduler.allocatePesForVm(vm1, mipsShare1));
+		assertTrue(vmScheduler.allocateResForVm(vm1, mipsShare1));
 
-		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getAvailableMips(), 0);
-		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getMaxAvailableMips(), 0);
-		assertEquals(MIPS / 4, vmScheduler.getTotalAllocatedMipsForVm(vm1), 0);
+		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getAvailableRes(), 0);
+		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getMaxAvailableRes(), 0);
+		assertEquals(MIPS / 4, vmScheduler.getTotalAllocatedResForVm(vm1), 0);
 
 		List<Double> mipsShare2 = new ArrayList<Double>();
 		mipsShare2.add(MIPS / 2);
 		mipsShare2.add(MIPS / 8);
 
-		assertTrue(vmScheduler.allocatePesForVm(vm2, mipsShare2));
+		assertTrue(vmScheduler.allocateResForVm(vm2, mipsShare2));
 
 		assertEquals(
 				PeList.getTotalMips(peList) - MIPS / 4 - MIPS / 2 - MIPS / 8,
-				vmScheduler.getAvailableMips(),
+				vmScheduler.getAvailableRes(),
 				0);
 		assertEquals(
 				PeList.getTotalMips(peList) - MIPS / 4 - MIPS / 2 - MIPS / 8,
-				vmScheduler.getMaxAvailableMips(),
+				vmScheduler.getMaxAvailableRes(),
 				0);
-		assertEquals(MIPS / 2 + MIPS / 8, vmScheduler.getTotalAllocatedMipsForVm(vm2), 0);
+		assertEquals(MIPS / 2 + MIPS / 8, vmScheduler.getTotalAllocatedResForVm(vm2), 0);
 
 		// List<Double> mipsShare3 = new ArrayList<Double>();
 		// mipsShare3.add(MIPS);
@@ -117,9 +118,9 @@ public class VmSchedulerTimeSharedTest {
 
 		vmScheduler.deallocatePesForAllVms();
 
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableMips(), 0);
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableMips(), 0);
-		assertEquals(0, vmScheduler.getTotalAllocatedMipsForVm(vm2), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableRes(), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableRes(), 0);
+		assertEquals(0, vmScheduler.getTotalAllocatedResForVm(vm2), 0);
 	}
 
 	@Test
@@ -130,33 +131,33 @@ public class VmSchedulerTimeSharedTest {
 		List<Double> mipsShare1 = new ArrayList<Double>();
 		mipsShare1.add(MIPS / 4);
 
-		assertTrue(vmScheduler.allocatePesForVm(vm1, mipsShare1));
+		assertTrue(vmScheduler.allocateResForVm(vm1, mipsShare1));
 
-		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getAvailableMips(), 0);
-		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getMaxAvailableMips(), 0);
-		assertEquals(0.9 * MIPS / 4, vmScheduler.getTotalAllocatedMipsForVm(vm1), 0);
+		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getAvailableRes(), 0);
+		assertEquals(PeList.getTotalMips(peList) - MIPS / 4, vmScheduler.getMaxAvailableRes(), 0);
+		assertEquals(0.9 * MIPS / 4, vmScheduler.getTotalAllocatedResForVm(vm1), 0);
 
 		List<Double> mipsShare2 = new ArrayList<Double>();
 		mipsShare2.add(MIPS / 2);
 		mipsShare2.add(MIPS / 8);
 
-		assertTrue(vmScheduler.allocatePesForVm(vm2, mipsShare2));
+		assertTrue(vmScheduler.allocateResForVm(vm2, mipsShare2));
 
 		assertEquals(
 				PeList.getTotalMips(peList) - MIPS / 4 - MIPS / 2 - MIPS / 8,
-				vmScheduler.getAvailableMips(),
+				vmScheduler.getAvailableRes(),
 				0);
 		assertEquals(
 				PeList.getTotalMips(peList) - MIPS / 4 - MIPS / 2 - MIPS / 8,
-				vmScheduler.getMaxAvailableMips(),
+				vmScheduler.getMaxAvailableRes(),
 				0);
-		assertEquals(0.9 * MIPS / 2 + 0.9 * MIPS / 8, vmScheduler.getTotalAllocatedMipsForVm(vm2), 0);
+		assertEquals(0.9 * MIPS / 2 + 0.9 * MIPS / 8, vmScheduler.getTotalAllocatedResForVm(vm2), 0);
 
 		vmScheduler.deallocatePesForAllVms();
 
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableMips(), 0);
-		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableMips(), 0);
-		assertEquals(0, vmScheduler.getTotalAllocatedMipsForVm(vm2), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getAvailableRes(), 0);
+		assertEquals(PeList.getTotalMips(peList), vmScheduler.getMaxAvailableRes(), 0);
+		assertEquals(0, vmScheduler.getTotalAllocatedResForVm(vm2), 0);
 	}
 
 }

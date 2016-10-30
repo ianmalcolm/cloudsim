@@ -71,7 +71,7 @@ public class EdgeSwitch extends Switch {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), switching_delay, CloudSimTags.Network_Event_send);
+		send(getId(), switching_delay, CloudSimTags.Network_Event_send);
 
 		// packet is recieved from host
 		// packet is to be sent to aggregate level or to another host in the same level

@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.PeProvisioner;
+import org.cloudbus.cloudsim.resource.Pe;
 
 /**
  * VmSchedulerTimeShared is a VMM allocation policy that allocates one or more Pe to a VM, and
@@ -49,7 +50,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 	 * @see cloudsim.VmScheduler#allocatePesForVm(cloudsim.Vm, java.util.List)
 	 */
 	@Override
-	public boolean allocatePesForVm(Vm vm, List<Double> mipsShareRequested) {
+	public boolean allocateResForVm(Vm vm, List<Double> mipsShareRequested) {
 		/**
 		 * TODO: add the same to RAM and BW provisioners
 		 */
@@ -76,7 +77,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 	 */
 	protected boolean allocatePesForVm(String vmUid, List<Double> mipsShareRequested) {
 		double totalRequestedMips = 0;
-		double peMips = getPeCapacity();
+		double peMips = getResCapacity();
 		for (Double mips : mipsShareRequested) {
 			// each virtual PE of a VM must require not more than the capacity of a physical PE
 			if (mips > peMips) {
@@ -86,7 +87,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 		}
 
 		// This scheduler does not allow over-subscription
-		if (getAvailableMips() < totalRequestedMips) {
+		if (getAvailableRes() < totalRequestedMips) {
 			return false;
 		}
 
@@ -111,7 +112,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 		}
 
 		getMipsMap().put(vmUid, mipsShareAllocated);
-		setAvailableMips(getAvailableMips() - totalRequestedMips);
+		setAvailableMips(getAvailableRes() - totalRequestedMips);
 
 		return true;
 	}
@@ -166,7 +167,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 	 * @see cloudsim.VmScheduler#deallocatePesForVm(cloudsim.Vm)
 	 */
 	@Override
-	public void deallocatePesForVm(Vm vm) {
+	public void deallocateResForVm(Vm vm) {
 		getMipsMapRequested().remove(vm.getUid());
 		setPesInUse(0);
 		getMipsMap().clear();
@@ -203,8 +204,8 @@ public class VmSchedulerTimeShared extends VmScheduler {
 	 * @return max mips
 	 */
 	@Override
-	public double getMaxAvailableMips() {
-		return getAvailableMips();
+	public double getMaxAvailableRes() {
+		return getAvailableRes();
 	}
 
 	/**

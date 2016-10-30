@@ -13,12 +13,12 @@ import java.util.Map;
 
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmAllocationPolicy;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.predicates.PredicateType;
+import org.cloudbus.cloudsim.resource.Storage;
 
 /**
  * PowerDatacenterNonPowerAware is a class that represents a non-power aware data center in the
@@ -70,7 +70,7 @@ public class PowerDatacenterNonPowerAware extends PowerDatacenter {
 	protected void updateCloudletProcessing() {
 		if (getCloudletSubmitted() == -1 || getCloudletSubmitted() == CloudSim.clock()) {
 			CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.VM_DATACENTER_EVENT));
-			schedule(getId(), getSchedulingInterval(), CloudSimTags.VM_DATACENTER_EVENT);
+			send(getId(), getSchedulingInterval(), CloudSimTags.VM_DATACENTER_EVENT);
 			return;
 		}
 		double currentTime = CloudSim.clock();

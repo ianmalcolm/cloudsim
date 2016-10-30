@@ -17,6 +17,7 @@ import java.util.List;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
+import org.cloudbus.cloudsim.resource.Pe;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.lists.PeList;
+import org.cloudbus.cloudsim.resource.Pe;
 
 /**
  * This is a Time-Shared VM Scheduler, which allows over-subscription. In other words, the scheduler
@@ -52,7 +53,7 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 		// if the requested mips is bigger than the capacity of a single PE, we cap
 		// the request to the PE's capacity
 		List<Double> mipsShareRequestedCapped = new ArrayList<Double>();
-		double peMips = getPeCapacity();
+		double peMips = getResCapacity();
 		for (Double mips : mipsShareRequested) {
 			if (mips > peMips) {
 				mipsShareRequestedCapped.add(peMips);
@@ -71,7 +72,7 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 			totalRequestedMips *= 0.1;
 		}
 
-		if (getAvailableMips() >= totalRequestedMips) {
+		if (getAvailableRes() >= totalRequestedMips) {
 			List<Double> mipsShareAllocated = new ArrayList<Double>();
 			for (Double mipsRequested : mipsShareRequestedCapped) {
 				if (getVmsMigratingOut().contains(vmUid)) {
@@ -85,7 +86,7 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 			}
 
 			getMipsMap().put(vmUid, mipsShareAllocated);
-			setAvailableMips(getAvailableMips() - totalRequestedMips);
+			setAvailableMips(getAvailableRes() - totalRequestedMips);
 		} else {
 			redistributeMipsDueToOverSubscription();
 		}
@@ -109,7 +110,7 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 			String vmId = entry.getKey();
 			List<Double> mipsShareRequested = entry.getValue();
 			List<Double> mipsShareRequestedCapped = new ArrayList<Double>();
-			double peMips = getPeCapacity();
+			double peMips = getResCapacity();
 			for (Double mips : mipsShareRequested) {
 				if (mips > peMips) {
 					mipsShareRequestedCapped.add(peMips);

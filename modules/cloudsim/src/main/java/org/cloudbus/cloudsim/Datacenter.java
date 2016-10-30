@@ -17,6 +17,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.resource.Storage;
 
 /**
  * Datacenter class is a CloudResource whose hostList are virtualized. It deals with processing of
@@ -451,7 +452,7 @@ public class Datacenter extends SimEntity {
 			}
 
 			vm.updateVmProcessing(CloudSim.clock(), getVmAllocationPolicy().getHost(vm).getVmScheduler()
-					.getAllocatedMipsForVm(vm));
+					.getAllocatedResForVm(vm));
 		}
 
 	}
@@ -795,7 +796,7 @@ public class Datacenter extends SimEntity {
 		if (eventTime > 0.0) { // if this cloudlet is in the exec queue
 			status = true;
 			if (eventTime > CloudSim.clock()) {
-				schedule(getId(), eventTime, CloudSimTags.VM_DATACENTER_EVENT);
+				send(getId(), eventTime, CloudSimTags.VM_DATACENTER_EVENT);
 			}
 		}
 
@@ -884,7 +885,7 @@ public class Datacenter extends SimEntity {
 				smallerTime = CloudSim.clock() + CloudSim.getMinTimeBetweenEvents() + 0.01;
 			}
 			if (smallerTime != Double.MAX_VALUE) {
-				schedule(getId(), (smallerTime - CloudSim.clock()), CloudSimTags.VM_DATACENTER_EVENT);
+				send(getId(), (smallerTime - CloudSim.clock()), CloudSimTags.VM_DATACENTER_EVENT);
 			}
 			setLastProcessTime(CloudSim.clock());
 		}

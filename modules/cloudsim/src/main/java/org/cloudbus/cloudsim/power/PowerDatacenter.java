@@ -14,13 +14,13 @@ import java.util.Map;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmAllocationPolicy;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.predicates.PredicateType;
+import org.cloudbus.cloudsim.resource.Storage;
 
 /**
  * PowerDatacenter is a class that enables simulation of power-aware data centers.
@@ -87,7 +87,7 @@ public class PowerDatacenter extends Datacenter {
 	protected void updateCloudletProcessing() {
 		if (getCloudletSubmitted() == -1 || getCloudletSubmitted() == CloudSim.clock()) {
 			CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.VM_DATACENTER_EVENT));
-			schedule(getId(), getSchedulingInterval(), CloudSimTags.VM_DATACENTER_EVENT);
+			send(getId(), getSchedulingInterval(), CloudSimTags.VM_DATACENTER_EVENT);
 			return;
 		}
 		double currentTime = CloudSim.clock();

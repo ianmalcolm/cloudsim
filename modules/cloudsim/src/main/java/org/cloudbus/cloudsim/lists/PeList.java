@@ -11,8 +11,8 @@ package org.cloudbus.cloudsim.lists;
 import java.util.List;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.resource.Pe;
 
 /**
  * PeList is a collection of operations on lists of PEs.
@@ -100,7 +100,7 @@ public class PeList {
 	public static <T extends Pe> double getMaxUtilizationAmongVmsPes(List<T> peList, Vm vm) {
 		double maxUtilization = 0;
 		for (Pe pe : peList) {
-			if (pe.getPeProvisioner().getAllocatedMipsForVm(vm) == null) {
+			if (pe.getPeProvisioner().getAllocatedResForVm(vm) == null) {
 				continue;
 			}
 			double utilization = pe.getPeProvisioner().getUtilization();

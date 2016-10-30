@@ -81,7 +81,7 @@ public class Switch extends SimEntity {
 	@Override
 	public void startEntity() {
 		Log.printLine(getName() + " is starting...");
-		schedule(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
+		send(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class Switch extends SimEntity {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), latency, CloudSimTags.Network_Event_send);
+		send(getId(), latency, CloudSimTags.Network_Event_send);
 		if (level == NetworkConstants.EDGE_LEVEL) {
 			// packet is to be recieved by host
 			int hostid = dc.VmtoHostlist.get(recvVMid);
@@ -170,7 +170,7 @@ public class Switch extends SimEntity {
 		NetworkPacket hspkt = (NetworkPacket) ev.getData();
 		int recvVMid = hspkt.pkt.reciever;
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_send));
-		schedule(getId(), switching_delay, CloudSimTags.Network_Event_send);
+		send(getId(), switching_delay, CloudSimTags.Network_Event_send);
 		if (level == NetworkConstants.EDGE_LEVEL) {
 			// packet is recieved from host
 			// packet is to be sent to aggregate level or to another host in the
@@ -266,7 +266,7 @@ public class Switch extends SimEntity {
 	protected void processpacket(SimEvent ev) {
 		// send packet to itself with switching delay (discarding other)
 		CloudSim.cancelAll(getId(), new PredicateType(CloudSimTags.Network_Event_UP));
-		schedule(getId(), switching_delay, CloudSimTags.Network_Event_UP);
+		send(getId(), switching_delay, CloudSimTags.Network_Event_UP);
 		pktlist.add((NetworkPacket) ev.getData());
 
 		// add the packet in the list
